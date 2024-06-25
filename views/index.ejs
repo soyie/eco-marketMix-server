@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Project List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        *{
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #user-number, #complaints-number{
+            width: 140px;
+            height: 110px;
+            background-color: aqua;
+            color: antiquewhite;
+            font-size: medium;
+            padding: 12px;
+            margin: 0;
+            margin: 26px;
+            color: blue;
+        }
+        #numbers{
+            width: 95%;
+            background-color: rgba(163, 202, 238, 0.795);
+            height: 101%;
+
+        }
+        #manage-other{
+            height: 93%;
+            background-color: azure;
+            padding-top: 35px;
+            width: 7%;
+            /* display: inline-block;
+            vertical-align: top; */
+        }
+        #project-info{
+            display: flex;
+            height: 100%;
+        }
+        .menu-items{
+            width: 46px;
+            height: 46px;
+            margin: 22px;
+        }
+        #manage-other:hover{
+            width: 10%;
+            height: 100%;
+            background-color: aqua;
+            color: rgb(26, 46, 224);
+        }
+        .menu-items:hover{
+            background-color:transparent;
+            width: 55px;
+            height: 55px;
+            
+        }
+        #important-numbers{
+            display: flex;
+            height: 80px;
+            margin: 6px;
+            padding: 6px;
+        }
+        #graphs-and-chats{
+            display: flex;
+            width: 96%;
+            margin: 6% 2%;
+            height: 250px;
+        }
+        i{
+            font-size: xx-larger;
+            font-style: italic;
+            font-size: 33px;
+        }
+        i:hover{
+            font-size: 53px;
+            color:rgb(127, 99, 202)
+        }
+        .info-title{
+            display: none;
+        }
+        .info-title:hover{
+            display: auto;
+            color: black;
+        }
+        #navigator{
+            display: flex;
+            justify-content: space-evenly;
+            height: 10%;
+            width: 96%;
+            background-color: aqua;
+        }
+        #stat-number{
+            font-size: xx-large;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #navigator a{
+            text-decoration: none;
+            margin: 5px 5px 0 5px;
+            padding: 3px 3px 0 3px;
+
+        }
+        #manage-other a{
+            text-decoration: none;
+            color: black;
+        }
+        i{
+            color: black;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="project-info">
+    <div id="manage-other">
+        <div class="menu-items" href="" id="make-anouncements">
+            <a href="/server/anouncements"><i class="bi bi-megaphone"></i></a><br>
+        </div>
+        <div class="menu-items" href="" id="message-privately">
+            <a href="/server/private-messages"><i class="bi bi-chat-dots"></i></a><br>
+            <p class="info-title"></p>
+        </div>
+        <div class="menu-items" href="" id="complaints">
+            <a href="/server/user-complaints"><i class="bi bi-envelope-exclamation-fill"></i></a><br>
+            <p class="info-title"></p>
+        </div>
+        <div class="menu-items" href="" id="machine-learning">
+            <a href="/server/ai"><i class="bi bi-robot"></i></a><br>
+            <p class="info-title"></p>
+        </div>
+    </div>
+    <div id="numbers">
+        <div id="navigator">
+            <a href="/server/users"> Users</a>
+            <a href="/server/businesses"> Businesses</a>
+            <a href="#"> Complaints</a>
+        </div>
+        <div id="important-numbers">
+            <div id="user-number" title="number of recorded users">
+                <p><span id="stat-number"><%= users %></span> <br>Users</p>
+            </div>
+            <div id="complaints-number" title="number of all complaints">
+                <p href="/server/user-complaints" ><span id="stat-number">23</span><br> complaints rec..</p>
+            </div>
+            <div id="complaints-number" title="number of all Businesses">
+                <p href="/server/user-complaints" ><span id="stat-number">21</span><br> Businesses</p>
+            </div>
+        </div>
+        <div id="graphs-and-chats">
+            <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+            <canvas id="myPie" style="width:100%;max-width:700px"></canvas>
+        </div>
+        
+    </div>
+    
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+            const yValues = [2760,1540,4760,7960,9070,7810,7330];
+            const barColors = ["red", "green", "blue", "orange", "brown", "pink", "seagreen"];
+            const xValues = ["1980-1985", "1986-1990", "1991-1995", "1996-2000", "2001-2004", "2005-2010", "2011-2015"];
+
+            new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                    data: [860,1140,1060,1060,1070,1110,1330],
+                    borderColor: "red",
+                    fill: false
+                    },{
+                    data: [1600,1700,1700,1900,2000,2700,4000],
+                    borderColor: "green",
+                    fill: false
+                    },{
+                    data: [300,700,2000,5000,6000,4000,2000],
+                    borderColor: "blue",
+                    fill: false
+                    }]
+                },
+                options: {
+                    legend: {display: false},
+                    title: {
+                        display: true,
+                        text: "Different User ages"
+                    }
+                }
+                });
+            new Chart("myPie", {
+            type: "doughnut",
+            data: {
+                labels: xValues,
+                datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+                }]
+            },
+            options: {
+                legend: {display:false},
+                title: {
+                display: true,
+                text: "Most users"
+                }
+            }
+            });
+        });
+        
+        window.onload = function() {
+    let icons = document.getElementsByTagName("i");
+    let infoTitles = document.querySelectorAll(".info-title");
+    
+    // Hide all info-titles initially
+    for (let j = 0; j < infoTitles.length; j++) {
+        infoTitles[j].style.display = "none";
+    }
+    
+    // Event listener for mouseover on each icon
+    for (let i = 0; i < icons.length; i++) {
+        icons[i].addEventListener("mouseover", function() {
+            // Hide all info-titles
+            for (let j = 0; j < infoTitles.length; j++) {
+                infoTitles[j].style.display = "none";
+            }
+            
+            // Show the corresponding info-title
+            let infoTitle = this.nextElementSibling;
+            infoTitle.style.display = "inline";
+        });
+    }
+
+    // Event listener for when mouse leaves all icons
+    document.addEventListener("mouseout", function(event) {
+        // Check if the mouse leaves all icons
+        if (!event.relatedTarget || event.relatedTarget.tagName !== "I") {
+            // Hide all info-titles
+            for (let j = 0; j < infoTitles.length; j++) {
+                infoTitles[j].style.display = "none";
+            }
+        }
+    });
+};
+
+</script>
+</html>
