@@ -107,7 +107,7 @@ router.get("/server/users", async (req, res) => {
     try {
         const db = await connectToDatabase();
         const users = await db.collection('users').find().toArray();
-        console.log(users)
+        // console.log(users)
         res.render("userList", { "users": users }); // Ensure the key is "users"
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -154,18 +154,77 @@ router.get("/server/ai", (req, res)=>{
     res.render("inteligence")
 })
 
+const allUsers = [];
+const whitePlan = []
+const goldPlan = []
+const premiumPlan = []
+const blackPlan = []
+const otherPlans = []
 
 router.get('/', async (req, res)=>{
     try {
         const db = await connectToDatabase();
         const users = (await db.collection('users').find().toArray()).length;
-        console.log(users)
-        res.render("index", { "users": users }); // Ensure the key is "users"
+        allUsers.push(await db.collection('users').find().toArray())
+        // console.log(allUsers[0].array.forEach(element => {
+        //     element.email
+        // }))
+        // console.log(allUsers[0])
+        for (x=0; x<users; x++){
+            // console.log(allUsers[0][x].plan)
+            switch (allUsers[0][x].plan){
+                case "Black":
+                    blackPlan.push(allUsers[0][x].plan)
+                    break
+                case "White":
+                    whitePlan.push(allUsers[0][x].plan)
+                    break
+                case "Gold":
+                    goldPlan.push(allUsers[0][x].plan)
+                    break
+                case "Premium":
+                    premiumPlan.push(allUsers[0][x].plan)
+                    break
+                default:
+                    otherPlans.push(allUsers[0][x].plan)
+                    break
+            }
+        }
+        const allPlans = {
+            "premium": premiumPlan.length,
+            "gold": goldPlan.length,
+            "black": blackPlan.length,
+            "white": whitePlan.length,
+            "other": otherPlans.length
+        }
+        console.table(allPlans)
+        res.render("index", { "users": users , "plans": allPlans}); // Ensure the key is "users"
     } catch (error) {
         console.error('Error fetching users:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
+
+router.get("/server/business/:userId", async (req, res) => {
+    try {
+        console.log(req.params.userId)
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// router.get('/users', async (req, res)=>{
+//     try {
+//         const db = await connectToDatabase();
+//         const users = (await db.collection('users').find().toArray()).length;
+//         console.log(users)
+//         res.render("index", { "users": users }); // Ensure the key is "users"
+//     } catch (error) {
+//         console.error('Error fetching users:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// })
 
 // Update
 app.put('/api/server/:id', async (req, res) => {
@@ -214,35 +273,25 @@ app.delete('/api/delete/:id', async (req, res) => {
     }
 });
 
-app.get('/server/delete/:id', async (req, res) => {
+app.get('/server/info/:id', async (req, res) => {
     try {
         const id = req.params.id;
         console.log(new ObjectId(id));
-        // Validate the ID format
-        // if (!ObjectId.isValid(id)) {
-        //     return res.status(400).json({ error: 'Invalid ID format' });
-        // }
-
         const db = await connectToDatabase();
 
         // Delete the user
-        const result = await db.collection('announcements').deleteOne({ _id: new ObjectId(id) });
+        const result = await db.collection('announcements').findOne({ _id: new ObjectId(id) });
         console.log(result)
-
-        // Check if deletion was successful
-        if (result.deletedCount === 1) {
-            res.render("announcement")
-            return res.status(200).json({ message: 'announcement deleted successfully' });
-        } else {
-            res.render("announcement")
-            return res.status(500).json({ error: 'Failed to delete user' });
-        }
     
     } catch (error) {
         console.error('Error deleting announcement:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+app.get('/server/businesses/information/:business', async (req, res) => {
+    console.log(req.params.business)
+})
 
 
 // Start the server

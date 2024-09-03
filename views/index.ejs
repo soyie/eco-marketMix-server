@@ -22,16 +22,16 @@
             color: blue;
         }
         #numbers{
-            width: 95%;
+            width: 85%;
             background-color: rgba(163, 202, 238, 0.795);
-            height: 101%;
+            height: 100%;
 
         }
         #manage-other{
             height: 93%;
             background-color: azure;
             padding-top: 35px;
-            width: 7%;
+            width: 15%;
             /* display: inline-block;
             vertical-align: top; */
         }
@@ -45,7 +45,7 @@
             margin: 22px;
         }
         #manage-other:hover{
-            width: 10%;
+            width: 20%;
             height: 100%;
             background-color: aqua;
             color: rgb(26, 46, 224);
@@ -64,7 +64,7 @@
         }
         #graphs-and-chats{
             display: flex;
-            width: 96%;
+            /* width: 80%; */
             margin: 6% 2%;
             height: 250px;
         }
@@ -88,17 +88,27 @@
             display: flex;
             justify-content: space-evenly;
             height: 10%;
-            width: 96%;
-            background-color: aqua;
+            width: 100%;
+            background-color: rgb(35, 35, 36);
         }
         #stat-number{
             font-size: xx-large;
             font-family: 'Courier New', Courier, monospace;
         }
         #navigator a{
+            color: snow;
             text-decoration: none;
-            margin: 5px 5px 0 5px;
-            padding: 3px 3px 0 3px;
+            margin: 12px 5px 18px 5px;
+            padding: 10px 3px 18px 3px;
+            height: 38px;
+
+        }
+        #navigator a:hover{
+            color: snow;
+            background-color: seagreen;
+            /* margin: 0px 5px 0px 5px;
+            padding: 0px 3px 0px 3px; */
+            /* background-color: seagreen; */
 
         }
         #manage-other a{
@@ -116,19 +126,19 @@
 <div id="project-info">
     <div id="manage-other">
         <div class="menu-items" href="" id="make-anouncements">
-            <a href="/server/anouncements"><i class="bi bi-megaphone"></i></a><br>
+            <a href="/server/anouncements">Announcements</a><br>
         </div>
         <div class="menu-items" href="" id="message-privately">
-            <a href="/server/private-messages"><i class="bi bi-chat-dots"></i></a><br>
-            <p class="info-title"></p>
+            <a href="/server/private-messages">Messages</a><br>
         </div>
         <div class="menu-items" href="" id="complaints">
-            <a href="/server/user-complaints"><i class="bi bi-envelope-exclamation-fill"></i></a><br>
-            <p class="info-title"></p>
+            <a href="/server/user-complaints">Complaints</a><br>
         </div>
         <div class="menu-items" href="" id="machine-learning">
-            <a href="/server/ai"><i class="bi bi-robot"></i></a><br>
-            <p class="info-title"></p>
+            <a href="/server/ai">Manage Plans</a><br>
+        </div>
+        <div class="menu-items" href="" id="settings">
+            <a href="/server/ai">Settings</a><br>
         </div>
     </div>
     <div id="numbers">
@@ -138,31 +148,51 @@
             <a href="#"> Complaints</a>
         </div>
         <div id="important-numbers">
-            <div id="user-number" title="number of recorded users">
-                <p><span id="stat-number"><%= users %></span> <br>Users</p>
+            <div id="user-number" title="number of recorded users" onclick="showUsers('<%= users %>')">
+                <p><span id="stat-number">21</span> <br>Users</p>
             </div>
             <div id="complaints-number" title="number of all complaints">
                 <p href="/server/user-complaints" ><span id="stat-number">23</span><br> complaints rec..</p>
             </div>
             <div id="complaints-number" title="number of all Businesses">
-                <p href="/server/user-complaints" ><span id="stat-number">21</span><br> Businesses</p>
+                <p href="/server/user-complaints" ><span id="stat-number"><%= users %></span><br> Businesses</p>
             </div>
         </div>
         <div id="graphs-and-chats">
-            <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
-            <canvas id="myPie" style="width:100%;max-width:700px"></canvas>
+            <canvas id="myChart" style="width:80%;max-width:550px"></canvas>
+            <canvas id="myPie" style="width:80%;max-width:550px"></canvas>
         </div>
-        
+        <input type="hidden" id="gold" value="<%= plans.gold%>">
+        <input type="hidden" id="black" value="<%= plans.black%>">
+        <input type="hidden" id="premium" value="<%= plans.premium%>">
+        <input type="hidden" id="white" value="<%= plans.white%>">
+        <input type="hidden" id="other" value="<%= plans.other%>">
     </div>
-    
 </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script>
+    const gold = []
+    const black = []
+    const white = []
+    const prem = []
+    const other = []
+    const k = document.getElementById("gold").value;
+    gold.push(k)
+    const i = document.getElementById("black").value;
+    black.push(i)
+    const j = document.getElementById("premium").value;
+    prem.push(j)
+    const l = document.getElementById("white").value;
+    white.push(l)
+    const p = document.getElementById("other").value;
+    other.push(p)
     document.addEventListener("DOMContentLoaded", function() {
-            const yValues = [2760,1540,4760,7960,9070,7810,7330];
-            const barColors = ["red", "green", "blue", "orange", "brown", "pink", "seagreen"];
-            const xValues = ["1980-1985", "1986-1990", "1991-1995", "1996-2000", "2001-2004", "2005-2010", "2011-2015"];
+        // console.log(k)
+            const yValues = [gold[0], black[0], prem[0],other[0],white[0]];
+            console.log(yValues)
+            const barColors = ["yellow", "black", "lightgrey", "seagreen", "blue"];
+            const xValues = ["Gold", "Black", "Premium", "Other", "White"];
 
             new Chart("myChart", {
                 type: "line",
@@ -191,7 +221,7 @@
                 }
                 });
             new Chart("myPie", {
-            type: "doughnut",
+            type: "bar",
             data: {
                 labels: xValues,
                 datasets: [{
@@ -203,7 +233,7 @@
                 legend: {display:false},
                 title: {
                 display: true,
-                text: "Most users"
+                text: "Different Plans"
                 }
             }
             });

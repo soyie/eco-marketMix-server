@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Project</title>
+    <title>All businesses</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
@@ -24,7 +24,7 @@
         }
         #numbers{
             width: 95%;
-            background-color: rgba(163, 202, 238, 0.795);
+            /* background-color: rgb(249, 252, 255); */
             height: 101%;
 
         }
@@ -58,26 +58,12 @@
             
         }
         #important-numbers{
-            display: flex;
+            /* display: flex; */
+            width: 100%;
             height: 90%;
             margin: 12px;
             padding: 12px;
             overflow-y: scroll;
-        }
-        #graphs-and-chats{
-            display: flex;
-            width: 96%;
-            margin: 6% 2%;
-            height: 250px;
-        }
-        i{
-            font-size: xx-larger;
-            font-style: italic;
-            font-size: 33px;
-        }
-        i:hover{
-            font-size: 53px;
-            color:rgb(127, 99, 202)
         }
         .info-title{
             display: none;
@@ -89,9 +75,9 @@
         #navigator{
             display: flex;
             justify-content: space-evenly;
-            height: 8%;
-            width: 96%;
-            background-color: aqua;
+            height: 10%;
+            width: 100%;
+            background-color: rgb(35, 35, 36);
         }
         #stat-number{
             font-size: xx-large;
@@ -115,29 +101,42 @@
             background-color: burlywood;
         }
 
+        #infoButton{
+            text-decoration: none;
+            padding: 12px;
+        }
+        #accountType{
+            width: 25%;
+            height: 300px;
+            margin:50px 100px;
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 20%;
+            top: 10%;
+            background-color: rgba(236, 236, 236, 0.94);
+            overflow: auto;
+            /* padding: 90px 30px 0 30px; */
+        }
+        #navigator a{
+            text-decoration: none;
+            padding: 3px 10px;
+            margin: 9px;
+            color: snow;
+        }
+        #navigator a:hover{
+            text-decoration: none;
+            padding: 3px 10px;
+            margin: 9px;
+            color: rgb(88, 104, 177);
+        }
+
+
     </style>
 
 </head>
 <body>
 <div id="project-info">
-    <div id="manage-other">
-        <div class="menu-items" href="" id="make-anouncements">
-            <a href="/server/anouncements"><i class="bi bi-megaphone"></i></a><br>
-            <p class="info-title">Anouncements</p>
-        </div>
-        <div class="menu-items" href="" id="message-privately">
-            <a href="/server/private-messages"><i class="bi bi-chat-dots"></i></a><br>
-            <p class="info-title"></p>
-        </div>
-        <div class="menu-items" href="" id="complaints">
-            <a href="/server/user-complaints"><i class="bi bi-envelope-exclamation-fill"></i></a><br>
-            <p class="info-title"></p>
-        </div>
-        <div class="menu-items" href="" id="machine-learning">
-            <a href="/server/learning-traits"><i class="bi bi-robot"></i></a><br>
-            <p class="info-title"></p>
-        </div>
-    </div>
     <div id="numbers">
         <div id="navigator">
             <a href="/server/users"> Users</a>
@@ -151,65 +150,77 @@
                     <th>Surname</th>
                     <th>Date of birth</th>
                     <th>Email</th>
-                    <th>Reister Date</th>
-                    <th>Last login</th>
+                    <th>Location</th>
+                    <th>Subscribers</th>
                     <th>Action</th>
                 </tr>
                 <% users.forEach(user => { %>
                     <tr >
-                        <td><%= user.name %></td>
-                        <td><%= user.surname %></td>
+                        <td><%= user.ownerName %></td>
+                        <td><%= user.ownerSurname %></td>
                         <td><%= user.dateOfBirth %></td>
+                        <td><%= user.location %></td>
                         <td><%= user.email %></td>
-                        <td><%= user.regDate %></td>
-                        <td><%= user.lastLogin %></td>
-                        <td><button>More</button></td>
+                        <td>6</td>
+                        <td><a href='/server/business/${<%= user._id %>}' id="infoButton" >More</a></td>
                     </tr>
                 <% }); %>
             </table>
         </div>
-    
+    </div>
 </div>
-<div id="showinfo">
-
-</div>
+<div id='accountType' className='modal-content animate'>
+    <span onClick="closeModal()" id='closer'>x</span><br /><br /><br />
+    <div className='accountType-BTN'>
+      <Link to="/new-user" className='cta-button' id="newUser">Prospective Customer</Link><br /><br /><br />
+      <Link to="/plans" className='cta-button' id="newBus">Start an Online Business</Link>
+    </div>
+  </div>
 </body>
 <script>
-    
-        window.onload = function() {
-    let icons = document.getElementsByTagName("i");
-    let infoTitles = document.querySelectorAll(".info-title");
-    
-    // Hide all info-titles initially
-    for (let j = 0; j < infoTitles.length; j++) {
-        infoTitles[j].style.display = "none";
-    }
-    
-    // Event listener for mouseover on each icon
-    for (let i = 0; i < icons.length; i++) {
-        icons[i].addEventListener("mouseover", function() {
-            // Hide all info-titles
-            for (let j = 0; j < infoTitles.length; j++) {
-                infoTitles[j].style.display = "none";
-            }
-            
-            // Show the corresponding info-title
-            let infoTitle = this.nextElementSibling;
-            infoTitle.style.display = "inline";
-        });
-    }
+    function openModal(i){
+        console.table(i)
+        document.getElementById('accountType').style.display = 'block';
+    };
 
-    // Event listener for when mouse leaves all icons
-    document.addEventListener("mouseout", function(event) {
-        // Check if the mouse leaves all icons
-        if (!event.relatedTarget || event.relatedTarget.tagName !== "I") {
-            // Hide all info-titles
-            for (let j = 0; j < infoTitles.length; j++) {
-                infoTitles[j].style.display = "none";
-            }
-        }
-    });
-};
+    function showAlerts(i){
+        alert(i)
+    }
+    // console.log(users)
+//         window.onload = function() {
+//     let icons = document.getElementsByTagName("i");
+//     let infoTitles = document.querySelectorAll(".info-title");
+    
+//     // Hide all info-titles initially
+//     for (let j = 0; j < infoTitles.length; j++) {
+//         infoTitles[j].style.display = "none";
+//     }
+    
+//     // Event listener for mouseover on each icon
+//     for (let i = 0; i < icons.length; i++) {
+//         icons[i].addEventListener("mouseover", function() {
+//             // Hide all info-titles
+//             for (let j = 0; j < infoTitles.length; j++) {
+//                 infoTitles[j].style.display = "none";
+//             }
+            
+//             // Show the corresponding info-title
+//             let infoTitle = this.nextElementSibling;
+//             infoTitle.style.display = "inline";
+//         });
+//     }
+
+//     // Event listener for when mouse leaves all icons
+//     document.addEventListener("mouseout", function(event) {
+//         // Check if the mouse leaves all icons
+//         if (!event.relatedTarget || event.relatedTarget.tagName !== "I") {
+//             // Hide all info-titles
+//             for (let j = 0; j < infoTitles.length; j++) {
+//                 infoTitles[j].style.display = "none";
+//             }
+//         }
+//     });
+// };
 
 </script>
 </html>
